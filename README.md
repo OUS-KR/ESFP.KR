@@ -52,6 +52,8 @@
   - 예제: [ESFP.KR/yt/1ZX1vEDTfY4/1m6s](https://esfp.kr/yt/1ZX1vEDTfY4/1m6s), [ESFP.KR/yt/yebNIHKAC4A/56](https://esfp.kr/yt/yebNIHKAC4A/56)
 - 유튜브 영상 썸네일: `ESFP.KR/yt/img/{유튜브 영상 아이디}`
   - 예제: [ESFP.KR/yt/img/1ZX1vEDTfY4](https://esfp.kr/yt/img/1ZX1vEDTfY4), [ESFP.KR/yt/img/yebNIHKAC4A](https://esfp.kr/yt/img/yebNIHKAC4A)
+- 유튜브 채널 RSS: `ESFP.KR/yt/rss/{유튜브 채널 아이디}`
+  - 예제: [ESFP.KR/yt/rss/UC-Fnix71vRP64WXeo0ikd0Q](https://esfp.kr/yt/rss/UC-Fnix71vRP64WXeo0ikd0Q)
 
 #### 마크다운 작성 시 사용 방법
 
