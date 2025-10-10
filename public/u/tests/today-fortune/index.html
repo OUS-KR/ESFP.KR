@@ -37,7 +37,7 @@
             </div>
             <div class="card info-card">
                 <div class="card-title"><span class="icon">📈</span> ESFP 지수</div>
-                <p id="mbtiIndexDisplay">ESFP 지수를 불러오는 중...</p>
+                <p id="intpIndexDisplay">ESFP 지수를 불러오는 중...</p>
             </div>
             <div class="card info-card">
                 <div class="card-title"><span class="icon">🔑</span> 행운의 키워드</div>
@@ -91,23 +91,23 @@
     // --- Enhanced Generative Data Parts ---
     const data = {
         advice: {
-            openings: ["오늘은", "오늘 당신의"],
-            subjects: ["당신의 ESFP 타입 특성이", "새로운 기회가"],
-            verbs: ["빛을 발하는 날입니다.", "당신을 기다립니다."],
-            connectors: ["따라서", "그러니"],
-            actions: ["자신감을 가지고 도전해 보세요.", "주변을 탐색해 보세요."]
+            openings: ["오늘은", "오늘 당신의", "지금은", "오늘은 특별히"],
+            subjects: ["활기찬 에너지가", "새로운 경험에 대한 열정이", "뛰어난 대인 관계 기술이", "주변의 아름다움이", "자발적인 행동이"],
+            verbs: ["빛을 발하는 날입니다.", "새로운 기회로 이끌 것입니다.", "주변 사람들에게 영감을 줍니다.", "예상치 못한 즐거움을 가져다줍니다.", "당신을 한 단계 성장시킬 것입니다."],
+            connectors: ["따라서", "그러니", "이 기회를 빌어", "망설이지 말고"],
+            actions: ["새로운 사람들과 교류하며 즐거운 시간을 보내세요.", "자신만의 방식으로 개성을 표현해 보세요.", "즉흥적인 모험을 떠나 새로운 것을 발견하세요.", "주변 사람들에게 긍정적인 에너지를 전달하세요.", "실용적인 활동을 통해 새로운 기술을 배워보세요."]
         },
         task: {
-            types: ["탐구하기:", "정리하기:"],
-            actions: ["오늘의", "새로운"],
-            subjects: ["아이디어", "정보"],
-            verbs: ["에 대해 생각해 보세요.", "를 정리해 보세요."]
+            types: ["즐기기:", "표현하기:", "경험하기:", "교류하기:"],
+            actions: ["평소 관심 있었던", "새롭게 시도하고 싶은", "흥미를 느꼈던", "사람들과 함께 할 수 있는"],
+            subjects: ["예술 활동", "새로운 취미", "사회적 모임", "즉흥적인 여행", "패션 스타일링", "봉사 활동"],
+            verbs: ["을(를) 통해 자신을 표현해 보세요.", "의 핵심을 파악하고 직접 경험해 보세요.", "을(를) 다른 사람과 공유해 보세요.", "과/와 관련된 새로운 아이디어를 3가지 이상 기록해 보세요.", "의 즐거움을 만끽해 보세요."]
         },
-        mbtiIndex: { // Renamed from intpIndex to mbtiIndex for generality
-            reasons: ["당신의 ESFP 타입 특성이 잘 발휘되어", "긍정적인 에너지가 넘쳐"],
-            results: ["하루를 성공적으로 보낼 수 있습니다.", "새로운 영감을 얻을 수 있습니다."]
+        esfpIndex: {
+            reasons: ["활기찬 에너지가 넘쳐흘러", "새로운 경험에 대한 열정이 불타올라", "뛰어난 대인 관계 기술이 빛을 발하여", "주변의 아름다움을 깊이 있게 느끼며", "자발적인 행동으로 새로운 기회를 창출하여"],
+            results: ["주변 사람들에게 긍정적인 영향을 줍니다.", "삶의 즐거움을 최대한으로 누릴 수 있습니다.", "새로운 도전을 성공적으로 이끌 수 있습니다.", "창의적인 아이디어를 현실로 만들 가능성이 높습니다.", "사회적 관계에서 큰 만족감을 느낄 수 있습니다."]
         },
-        keywords: ["MBTI", "성장", "도전", "영감", "탐색"]
+        keywords: ["연예인", "엔터테이너", "활기찬", "자발적인", "외향적인", "친근한", "열정적인", "현재 지향적인", "실용적인", "적응력", "유연한", "관찰력", "공감", "대인 관계 기술", "낙천적인", "배우", "가수", "댄서", "이벤트 기획자", "영업 전문가", "스포츠 선수", "패션 디자이너", "여행 가이드", "상담사"]
     };
 
     // --- Generator Functions ---
@@ -148,7 +148,7 @@
         return `${type} ${rawSentence}`;
     }
 
-    function generateMbtiIndex(randFn, parts) {
+    function generateEsfpIndex(randFn, parts) {
         const pick = (arr) => arr[Math.floor(randFn() * arr.length)];
         const percentage = 65 + Math.floor(randFn() * 31); // 65% to 95%
         return `${percentage}% - ${pick(parts.reasons)} ${pick(parts.results)}`;
@@ -167,12 +167,11 @@
 
             document.getElementById('adviceDisplay').innerText = generateAdvice(randFn, data.advice);
             document.getElementById('taskDisplay').innerText = generateTask(randFn, data.task);
-            document.getElementById('mbtiIndexDisplay').innerText = generateMbtiIndex(randFn, data.mbtiIndex);
+            document.getElementById('intpIndexDisplay').innerText = generateEsfpIndex(randFn, data.esfpIndex); // Changed to generateEsfpIndex
             document.getElementById('keywordDisplay').innerText = generateKeywords(randFn, data.keywords, 5);
-        }
-        catch (e) {
-            console.error('오늘의 운세 생성 중 오류 발생:', e);
-            document.getElementById('adviceDisplay').innerText = '콘텐츠를 불러오는 데 실패했습니다. 페이지를 새로고침해 주세요.';
+        } catch (e) {
+            console.error("오늘의 운세 생성 중 오류 발생:", e);
+            document.getElementById('adviceDisplay').innerText = "콘텐츠를 불러오는 데 실패했습니다. 페이지를 새로고침해 주세요.";
         }
     };
 </script>
