@@ -156,43 +156,17 @@
 
     // --- Game Implementations for ESFP ---
 
-    // Game 0: Dance Emote
-    function setupDanceEmoteGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 댄스 이모트";
-        const gameArea = document.getElementById('gameArea');
-        const sequences = [
-            { seq: ["⬆️", "⬇️", "⬅️", "➡️"], keys: ["ARROWUP", "ARROWDOWN", "ARROWLEFT", "ARROWRIGHT"] },
-            { seq: ["⬅️", "⬅️", "➡️", "➡️"], keys: ["ARROWLEFT", "ARROWLEFT", "ARROWRIGHT", "ARROWRIGHT"] }
-        ];
-        const sequence = sequences[Math.floor(currentRandFn() * sequences.length)];
-        let currentStep = 0;
-        gameArea.innerHTML = `<div class="game-display question">다음 순서대로 화살표 키를 눌러보세요!</div><div class="dance-area">${sequence.seq.join(' ')}</div>`;
-        document.getElementById('game-input-area').innerHTML = '';
-        gameInProgress = true;
+    // --- Game Implementations for ESFP ---
 
-        const keydownHandler = (e) => {
-            if (!gameInProgress) return;
-            if (e.key.toUpperCase() === sequence.keys[currentStep]) {
-                currentStep++;
-                if (currentStep === sequence.keys.length) {
-                    showFeedback(true, "완벽해요! 무대 체질이시군요!");
-                    document.removeEventListener('keydown', keydownHandler);
-                }
-            } else {
-                showFeedback(false, "앗, 스텝이 꼬였어요! 다시 해보세요.");
-                currentStep = 0; // Reset
-            }
-        };
-        document.addEventListener('keydown', keydownHandler);
-    }
-
-    // Game 1: Outfit Picker
-    function setupOutfitPickerGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 의상 고르기";
+    // Game 0: Today's Improv Performance
+    function setupImprovPerformanceGame() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 즉흥 퍼포먼스";
         const gameArea = document.getElementById('gameArea');
         const scenarios = [
-            { q: "해변 파티에 갑니다. 가장 어울리는 의상은?", a: ["정장", "수영복", "화려한 셔츠와 반바지"], correct: 2 },
-            { q: "조용한 북카페에 갑니다. 어떤 옷이 좋을까요?", a: ["편안한 스웨터", "반짝이는 드레스", "등산복"], correct: 0 }
+            { q: "갑자기 무대에 불려 나갔습니다. 주어진 키워드는 '바나나'입니다. 어떻게 하시겠습니까?", a: ["바나나를 마이크 삼아 열정적인 노래를 부른다.", "바나나의 영양학적 가치에 대해 설명한다.", "당황하며 무대 뒤로 도망친다."], correct: 0 },
+            { q: "친구들과의 모임에서 분위기가 가라앉았습니다. 당신의 역할은?", a: ["재미있는 이야기나 개인기를 선보여 분위기를 띄운다.", "조용히 상황을 지켜보며 다른 사람이 나서기를 기다린다.", "모두에게 각자 재미있는 이야기를 해보라고 제안한다."], correct: 0 },
+            { q: "길을 걷다 우연히 버스킹 공연을 발견했습니다. 당신의 반응은?", a: ["자연스럽게 합류하여 함께 즐기거나, 춤을 추며 호응한다.", "멀리서 조용히 감상하고 지나간다.", "공연이 끝나면 아낌없는 박수와 칭찬을 보낸다."], correct: 0 },
+            { q: "새로운 사람들과의 만남에서 어색한 침묵이 흐릅니다. 어떻게 하시겠습니까?", a: ["유머러스한 질문이나 흥미로운 이야기를 꺼내 대화를 시작한다.", "다른 사람들이 먼저 말하기를 기다린다.", "어색함을 견디지 못하고 자리를 피한다."], correct: 0 }
         ];
         const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
         currentCorrectAnswer = scenario.correct;
@@ -206,61 +180,20 @@
         gameInProgress = true;
     }
 
-    // Game 2: Improv Line
-    function setupImprovLineGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 즉흥 대사";
-        const gameArea = document.getElementById('gameArea');
-        const scenarios = ["말하는 강아지를 만났다.", "하늘에서 햄버거가 떨어졌다.", "내일 아침에 일어나니 슈퍼스타가 되어 있었다."];
-        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
-        gameArea.innerHTML = `<div class="game-display question">상황: ${scenario}<br>당신의 첫 마디는?</div>`;
-        document.getElementById('game-input-area').innerHTML = `
-            <div class="game-input">
-                <input type="text" id="userLine" placeholder="재치있는 대사를 입력하세요">
-                <button id="submitLine">제출</button>
-            </div>
-        `;
-        gameInProgress = true;
-    }
-
-    // Game 3: Guess the Song
-    function setupGuessTheSongGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 노래 맞추기";
-        const gameArea = document.getElementById('gameArea');
-        // Note: In a real scenario, these would be actual audio files.
-        const songs = [
-            { melody: "도-도-솔-솔-라-라-솔-", title: "반짝반짝 작은 별", options: ["학교종", "비행기", "반짝반짝 작은 별"] },
-            { melody: "솔-미-미-파-레-레-", title: "학교종", options: ["나비야", "학교종", "산토끼"] }
-        ];
-        const song = songs[Math.floor(currentRandFn() * songs.length)];
-        currentCorrectAnswer = song.title;
-        const options = [...song.options].sort(() => currentRandFn() - 0.5);
-        gameArea.innerHTML = `
-            <div class="game-display question">다음 멜로디를 보고 노래 제목을 맞춰보세요:<br><p style="font-size:1.5em; margin-top:1em;">${song.melody}</p></div>
-            <div class="choices">
-                ${options.map(choice => `<button class="choice-btn" data-choice="${choice}">${choice}</button>`).join('')}
-            </div>
-        `;
-        document.getElementById('game-input-area').innerHTML = '';
-        gameInProgress = true;
-    }
-
     // --- Game Dispatcher and Common Logic ---
     const gameTypes = [
-        setupDanceEmoteGame,
-        setupOutfitPickerGame,
-        setupImprovLineGame,
-        setupGuessTheSongGame
+        setupImprovPerformanceGame
     ];
 
     function getDayOfWeekText(day) {
         const messages = [
-            "일요일의 마무리, 다음 주 파티 계획을 세워보세요!", // Sunday
-            "새로운 한 주, 당신의 에너지로 모두를 즐겁게 해주세요!", // Monday
-            "오늘은 당신의 패션 감각을 뽐낼 시간입니다.", // Tuesday
-            "주 중반, 즉흥적인 즐거움을 찾아보세요.", // Wednesday
-            "스포트라이트를 받을 준비, 되셨나요?", // Thursday
-            "주말을 앞둔 금요일, 신나는 음악과 함께하세요!", // Friday
-            "여유로운 토요일, 친구들과 함께 즐거운 시간을 보내세요!", // Saturday
+            "일요일의 마무리, 다음 한 주를 위한 즐거운 계획을 세워보세요.", // Sunday
+            "새로운 한 주, 당신의 에너지로 주변을 밝혀주세요!", // Monday
+            "오늘은 당신의 즉흥적인 재능이 빛을 발하는 날입니다.", // Tuesday
+            "주 중반, 즐거운 경험을 찾아 떠나보는 건 어떨까요?", // Wednesday
+            "당신의 열정이 주변 사람들에게 영감을 줍니다.", // Thursday
+            "주말을 앞둔 금요일, 신나는 활동을 계획해 보세요.", // Friday
+            "여유로운 토요일, 새로운 모험을 즐겨보세요.", // Saturday
         ];
         return messages[day];
     }
@@ -268,10 +201,10 @@
     function showFeedback(isCorrect, message) {
         const feedbackMessage = document.getElementById('feedbackMessage');
         if (isCorrect) {
-            feedbackMessage.innerText = message || "정답입니다! 역시 ESFP, 이 시대의 진정한 연예인이시군요!";
+            feedbackMessage.innerText = message || "정답입니다! 역시 ESFP, 타고난 연예인이시군요!";
             feedbackMessage.className = "feedback-message correct";
         } else {
-            feedbackMessage.innerText = message || "아쉽네요. 좀 더 대담하게 생각해볼까요?";
+            feedbackMessage.innerText = message || "아쉽네요. 다른 즐거운 방법은 없었을까요?";
             feedbackMessage.className = "feedback-message incorrect";
         }
         gameInProgress = false;
@@ -279,28 +212,9 @@
 
     function handleChoiceClick(event) {
         if (!gameInProgress) return;
-        const target = event.target.closest('.choice-btn');
-        let isCorrect;
-        if (target.hasAttribute('data-index')) {
-            const selectedIndex = parseInt(target.getAttribute('data-index'));
-            isCorrect = (selectedIndex === currentCorrectAnswer);
-        } else if (target.hasAttribute('data-choice')) {
-            const selectedChoice = target.getAttribute('data-choice');
-            isCorrect = (selectedChoice === currentCorrectAnswer);
-        }
-        showFeedback(isCorrect);
+        const selectedIndex = parseInt(event.target.getAttribute('data-index'));
+        showFeedback(selectedIndex === currentCorrectAnswer);
         document.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
-    }
-
-    function handleLineSubmit() {
-        if (!gameInProgress) return;
-        const line = document.getElementById('userLine').value;
-        if (line.trim()) {
-            showFeedback(true, "재치있는 대사네요!");
-        } else {
-            showFeedback(false, "한 마디라도 입력해 주세요!");
-        }
-        document.getElementById('submitLine').disabled = true;
     }
 
     function initDailyGame() {
@@ -317,24 +231,11 @@
         document.getElementById('feedbackMessage').innerText = '';
         document.getElementById('feedbackMessage').className = "feedback-message";
         
-        const currentGameFn = gameTypes[gameTypeIndex];
-        if (currentGameFn === setupImprovLineGame) {
-            document.getElementById('submitLine').addEventListener('click', handleLineSubmit);
-        } else if (currentGameFn !== setupDanceEmoteGame) {
-             document.querySelectorAll('.choice-btn').forEach(btn => {
-                btn.addEventListener('click', handleChoiceClick);
-            });
-        }
+        // Add event listeners after creating the elements
+        document.querySelectorAll('.choice-btn').forEach(btn => {
+            btn.addEventListener('click', handleChoiceClick);
+        });
     }
-
-    window.onload = function() {
-        try {
-            initDailyGame();
-        } catch (e) {
-            console.error("오늘의 게임 생성 중 오류 발생:", e);
-            document.getElementById('gameDescription').innerText = "콘텐츠를 불러오는 데 실패했습니다. 페이지를 새로고침해 주세요.";
-        }
-    };
     </script>
 </body>
 </html>
