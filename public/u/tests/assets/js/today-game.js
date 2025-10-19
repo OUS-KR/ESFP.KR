@@ -293,8 +293,8 @@ const gameScenarios = {
         choices: [
             { text: "연습 시간 관리", action: "manage_practice_time" },
             { text: "무대 의상 제작", action: "create_stage_outfits" },
-            { text: "출연료 협상", "action": "negotiate_performance_fees" },
-            { text: "취소", "action": "return_to_intro" }
+            { text: "출연료 협상", action: "negotiate_performance_fees" },
+            { text: "취소", action: "return_to_intro" }
         ]
     },
     "action_venue_management": {
@@ -698,7 +698,7 @@ const minigames = [
             gameArea.innerHTML = `<p>${minigames[1].description}</p><p>게임을 시작합니다!</p>`;
             choicesDiv.innerHTML = `<button class="choice-btn" onclick="minigames[1].processAction('endGame')">게임 종료</button>`;
         },
-        render: () {},
+        render: function() {},
         processAction: (actionType) => {
             if (actionType === 'endGame') {
                 minigames[1].end();
@@ -722,7 +722,7 @@ const minigames = [
             gameArea.innerHTML = `<p>${minigames[2].description}</p><p>게임을 시작합니다!</p>`;
             choicesDiv.innerHTML = `<button class="choice-btn" onclick="minigames[2].processAction('endGame')">게임 종료</button>`;
         },
-        render: () {},
+        render: function() {},
         processAction: (actionType) => {
             if (actionType === 'endGame') {
                 minigames[2].end();
@@ -746,7 +746,7 @@ const minigames = [
             gameArea.innerHTML = `<p>${minigames[3].description}</p><p>게임을 시작합니다!</p>`;
             choicesDiv.innerHTML = `<button class="choice-btn" onclick="minigames[3].processAction('endGame')">게임 종료</button>`;
         },
-        render: () {},
+        render: function() {},
         processAction: (actionType) => {
             if (actionType === 'endGame') {
                 minigames[3].end();
@@ -770,7 +770,7 @@ const minigames = [
             gameArea.innerHTML = `<p>${minigames[4].description}</p><p>게임을 시작합니다!</p>`;
             choicesDiv.innerHTML = `<button class="choice-btn" onclick="minigames[4].processAction('endGame')">게임 종료</button>`;
         },
-        render: () {},
+        render: function() {},
         processAction: (actionType) => {
             if (actionType === 'endGame') {
                 minigames[4].end();
@@ -1003,7 +1003,7 @@ const gameActions = {
         const energyLoss = getRandomValue(10, 3);
         const popularityLoss = getRandomValue(5, 2);
         const talentLoss = getRandomValue(5, 2);
-        message = `새로운 스태프의 영입을 거절했습니다. 팀의 에너지와 인기, 재능이 감소합니다. (-${energyLoss} 에너지, -${popularityLoss} 인기, -${talentLoss} 재능)`;
+        const message = `새로운 스태프의 영입을 거절했습니다. 팀의 에너지와 인기, 재능이 감소합니다. (-${energyLoss} 에너지, -${popularityLoss} 인기, -${talentLoss} 재능)`;
         updateState({ energy: gameState.energy - energyLoss, popularity: gameState.popularity - popularityLoss, talent: gameState.talent - talentLoss, pendingNewStaff: null, currentScenarioId: 'intro' }, message);
     },
     accept_interview: () => {
