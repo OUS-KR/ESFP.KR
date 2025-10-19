@@ -102,6 +102,15 @@ function loadGameState() {
                 { id: "stylist_lee", name: "이스타", personality: "꼼꼼한", skill: "이미지 메이킹", trust: 60 }
             ];
         }
+        if (!loaded.activityVenues) {
+            loaded.activityVenues = {
+                practiceRoom: { built: false, durability: 100, name: "연습실", description: "재능을 갈고닦고 실력을 향상시킵니다.", effect_description: "재능 및 에너지 증가." },
+                broadcastStudio: { built: false, durability: 100, name: "방송 스튜디오", description: "방송에 출연하여 대중에게 자신을 알립니다.", effect_description: "인지도 및 쇼맨십 증가." },
+                concertHall: { built: false, durability: 100, name: "콘서트 홀", description: "대규모 공연을 개최하여 팬들과 소통합니다.", effect_description: "팬클럽 회원 수 및 인기 증가." },
+                fanClub: { built: false, durability: 100, name: "팬클럽", description: "팬들과 소통하고 팬심을 관리합니다.", effect_description: "매력 및 인지도 증가." },
+                fashionStudio: { built: false, durability: 100, name: "패션 스튜디오", description: "무대 의상을 제작하고 스타일을 연출합니다.", effect_description: "쇼맨십 및 매력 증가." }
+            };
+        }
         // Ensure new stats are initialized if loading old save
         if (loaded.showmanship === undefined) loaded.showmanship = 50;
         if (loaded.energy === undefined) loaded.energy = 50;
