@@ -1,0 +1,1018 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>esfp.kr</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0a060e;
+    }
+
+    /* ── 배경 오브 — 네온 무대 조명 ── */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(95px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* 네온 핑크 — 좌상 */
+    .bg-orb-1 {
+      width: 660px; height: 520px;
+      top: -220px; left: -170px;
+      background: radial-gradient(ellipse, rgba(255,60,150,0.17) 0%, transparent 70%);
+    }
+    /* 일렉트릭 퍼플 — 우하 */
+    .bg-orb-2 {
+      width: 580px; height: 580px;
+      bottom: -210px; right: -160px;
+      background: radial-gradient(ellipse, rgba(155,50,255,0.14) 0%, transparent 70%);
+    }
+    /* 코랄 레드 — 우상 */
+    .bg-orb-3 {
+      width: 360px; height: 360px;
+      top: -100px; right: -80px;
+      background: radial-gradient(ellipse, rgba(255,80,80,0.12) 0%, transparent 70%);
+    }
+    /* 사이언 — 좌하 */
+    .bg-orb-4 {
+      width: 320px; height: 280px;
+      bottom: -80px; left: -60px;
+      background: radial-gradient(ellipse, rgba(0,220,220,0.09) 0%, transparent 70%);
+    }
+    /* 골드 — 중앙 */
+    .bg-orb-5 {
+      width: 380px; height: 280px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(255,190,0,0.07) 0%, transparent 70%);
+    }
+
+    /* 배경 스파클 점 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at  8%  12%, rgba(255,120,200,0.38) 0%, transparent 100%),
+        radial-gradient(1px 1px at 23%  68%, rgba(180,80,255,0.30)  0%, transparent 100%),
+        radial-gradient(1px 1px at 37%  25%, rgba(255,80,120,0.28)  0%, transparent 100%),
+        radial-gradient(1px 1px at 52%  82%, rgba(0,220,200,0.26)   0%, transparent 100%),
+        radial-gradient(1px 1px at 66%  16%, rgba(255,190,0,0.30)   0%, transparent 100%),
+        radial-gradient(1px 1px at 77%  57%, rgba(255,60,150,0.24)  0%, transparent 100%),
+        radial-gradient(1px 1px at 91%   8%, rgba(160,60,255,0.28)  0%, transparent 100%),
+        radial-gradient(1px 1px at 14%  88%, rgba(255,100,60,0.22)  0%, transparent 100%),
+        radial-gradient(1px 1px at 58%  45%, rgba(255,180,0,0.20)   0%, transparent 100%),
+        radial-gradient(1px 1px at 44%  72%, rgba(255,60,150,0.18)  0%, transparent 100%),
+        radial-gradient(1px 1px at 83%  33%, rgba(0,210,220,0.20)   0%, transparent 100%),
+        radial-gradient(1px 1px at 31%  40%, rgba(200,80,255,0.16)  0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .scene {
+      perspective: 900px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── 카드 래퍼 ── */
+    .card-wrap {
+      width: 380px;
+      height: 240px;
+      position: relative;
+      transform-style: preserve-3d;
+      border-radius: 16px;
+      cursor: pointer;
+      animation: card-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* ESFP: 가장 빠르고 극적인 등장 */
+    @keyframes card-enter {
+      from {
+        opacity: 0;
+        transform: rotateX(-18deg) rotateY(25deg) scale(0.84) translateY(24px);
+        filter: blur(8px) brightness(1.4);
+      }
+      to {
+        opacity: 1;
+        transform: rotateX(0deg) rotateY(0deg) scale(1) translateY(0);
+        filter: blur(0) brightness(1);
+      }
+    }
+
+    /* ESFP: 가장 크고 빠른 유영 */
+    @keyframes float-idle {
+      0%,100% { transform: rotateX(3deg)   rotateY(-3.5deg) translateY(0px);  }
+      20%      { transform: rotateX(-3.5deg) rotateY(4deg)   translateY(-10px); }
+      45%      { transform: rotateX(2deg)    rotateY(-2.5deg) translateY(-6px); }
+      70%      { transform: rotateX(-2deg)   rotateY(4.5deg)  translateY(-9px); }
+    }
+
+    .card-wrap.is-idle {
+      animation:
+        card-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
+        float-idle 5.5s ease-in-out 0.9s infinite;
+    }
+
+    /* ── 카드 본체 ── */
+    .card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+
+      /* ESFP: 핑크·퍼플 반투명 — 무대 조명 */
+      background:
+        linear-gradient(
+          130deg,
+          rgba(255,80,160,0.16)  0%,
+          rgba(140,50,230,0.08)  32%,
+          rgba(255,70,130,0.12)  65%,
+          rgba(160,60,240,0.10) 100%
+        );
+      backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
+      -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
+
+      border: 1px solid rgba(255,120,200,0.28);
+      box-shadow:
+        0 32px 70px rgba(8,4,16,0.68),
+        0  8px 20px rgba(8,4,16,0.50),
+        inset 0  1px 0   rgba(255,180,230,0.50),
+        inset 0  2px 8px rgba(255,100,180,0.10),
+        inset 0 -1px 0   rgba(150,60,240,0.12),
+        inset 0  0  50px rgba(200,60,180,0.06);
+    }
+
+    /* ── 홀로그래픽 — 무대 조명 스펙트럼 ── */
+    /* 핑크→레드→퍼플→사이언→골드 — 가장 채도 높은 스펙트럼 */
+    .card-holo {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.28s ease;
+
+      background:
+        repeating-linear-gradient(
+          calc(var(--r, 116deg)),
+          hsla(330, 100%, 68%, 0.15) 0%,
+          hsla(290, 100%, 65%, 0.12) 8%,
+          hsla(260, 100%, 68%, 0.14) 16%,
+          hsla(200, 100%, 65%, 0.12) 24%,
+          hsla(170, 100%, 60%, 0.13) 32%,
+          hsla(45,  100%, 65%, 0.12) 40%,
+          hsla(15,  100%, 65%, 0.14) 48%,
+          hsla(330, 100%, 68%, 0.12) 56%,
+          hsla(290, 100%, 65%, 0.15) 64%
+        ),
+        radial-gradient(
+          ellipse 62% 62% at var(--mx, 50%) var(--my, 50%),
+          rgba(255,150,220,0.14) 0%,
+          transparent 65%
+        );
+
+      mix-blend-mode: screen;
+    }
+
+    .card-wrap:hover .card-holo { opacity: 1; }
+
+    /* ── 반짝이 글리터 텍스처 ── */
+    /* ESFP: 무대 위 반짝이 의상 */
+    .card-texture {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 8;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(
+          58deg,
+          rgba(255,120,200,0.000) 0px,
+          rgba(255,120,200,0.000) 3px,
+          rgba(255,120,200,0.018) 3px,
+          rgba(255,120,200,0.018) 4px
+        ),
+        repeating-linear-gradient(
+          -32deg,
+          rgba(160,60,255,0.000) 0px,
+          rgba(160,60,255,0.000) 5px,
+          rgba(160,60,255,0.014) 5px,
+          rgba(160,60,255,0.014) 6px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(0,210,220,0.000) 0px,
+          rgba(0,210,220,0.000) 8px,
+          rgba(0,210,220,0.008) 8px,
+          rgba(0,210,220,0.008) 9px
+        );
+      opacity: 0.80;
+    }
+
+    /* ── 엣지 하이라이트 ── */
+    .card-edge {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 9;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,180,230,0.48) 0px, rgba(255,180,230,0.00) 3px),
+        linear-gradient(90deg,  rgba(255,120,200,0.26) 0px, rgba(255,120,200,0.00) 2px),
+        linear-gradient(270deg, rgba(160,70,255,0.16)  0px, rgba(160,70,255,0.00)  2px),
+        linear-gradient(0deg,   rgba(0,200,220,0.10)   0px, rgba(0,200,220,0.00)   2px);
+    }
+
+    /* ── 스포트라이트 ── */
+    .card-spot {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 11;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      background: radial-gradient(
+        ellipse 48% 48% at var(--mx, 50%) var(--my, 50%),
+        rgba(255,160,230,0.12) 0%,
+        transparent 70%
+      );
+    }
+
+    .card-wrap:hover .card-spot { opacity: 1; }
+
+    /* ── Shimmer — 빠른 무대 빛 가로지름 ── */
+    .card-shimmer {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 12;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* 첫 번째 — 핑크 빔 */
+    .card-shimmer::before {
+      content: '';
+      position: absolute;
+      top: -100%; left: -70%;
+      width: 40%; height: 300%;
+      background: linear-gradient(
+        114deg,
+        transparent              35%,
+        rgba(255,120,200,0.07)   46%,
+        rgba(255,160,220,0.15)   50%,
+        rgba(255,120,200,0.07)   54%,
+        transparent              65%
+      );
+      transform: skewX(-11deg);
+      /* ESFP: 가장 빠른 주기 */
+      animation: stage-sweep 3.8s ease-in-out 1.0s infinite;
+    }
+
+    /* 두 번째 — 사이언 빔 */
+    .card-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -100%; left: -70%;
+      width: 18%; height: 300%;
+      background: linear-gradient(
+        114deg,
+        transparent              38%,
+        rgba(0,210,220,0.05)     48%,
+        rgba(0,230,240,0.10)     50%,
+        rgba(0,210,220,0.05)     52%,
+        transparent              62%
+      );
+      transform: skewX(-11deg);
+      animation: stage-sweep 3.8s ease-in-out 1.3s infinite;
+    }
+
+    @keyframes stage-sweep {
+      0%   { left: -70%; opacity: 0;  }
+      5%   {              opacity: 1; }
+      44%  { left: 130%; opacity: 1;  }
+      45%  {              opacity: 0; }
+      100% { left: 130%; opacity: 0;  }
+    }
+
+    .card-wrap:hover .card-shimmer::before,
+    .card-wrap:hover .card-shimmer::after {
+      animation-play-state: paused;
+    }
+
+    /* ── 배경 SVG ── */
+    .card-inner-art {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 6;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* ── 수평선 ── */
+    .card-hline {
+      position: absolute;
+      left: 24px; right: 24px;
+      bottom: 52px;
+      height: 1px;
+      z-index: 14;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255,100,180,0.20) 25%,
+        rgba(255,100,180,0.20) 75%,
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    /* ── 수직 미세선 ── */
+    .card-vline {
+      position: absolute;
+      top: 18%; bottom: 18%; left: 50%;
+      width: 1px;
+      z-index: 14;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255,100,180,0.16) 30%,
+        rgba(255,100,180,0.16) 70%,
+        transparent
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.32s ease;
+    }
+
+    .card-wrap:hover .card-vline { opacity: 1; }
+
+    /* ── hover 의미 오버레이 ── */
+    .card-meanings {
+      position: absolute;
+      inset: 0;
+      z-index: 13;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.38s ease;
+    }
+
+    .card-wrap:hover .card-meanings { opacity: 1; }
+
+    .meanings-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .meaning-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .meaning-glyph {
+      font-size: 16px;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255,100,200,0.75));
+      opacity: 0.90;
+    }
+
+    .meaning-label {
+      font-size: 6.5px;
+      font-weight: 500;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: rgba(255,170,220,0.46);
+      white-space: nowrap;
+    }
+
+    .meaning-sep {
+      width: 1px;
+      height: 26px;
+      background: linear-gradient(to bottom, transparent, rgba(255,100,180,0.22), transparent);
+    }
+
+    /* ── 카드 컨텐츠 ── */
+    .card-content {
+      position: relative;
+      z-index: 15;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 1fr auto;
+      padding: 24px 26px;
+    }
+
+    .card-name {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .name-main {
+      font-size: 54px;
+      font-weight: 100;
+      letter-spacing: 0.22em;
+      color: rgba(255,235,248,0.97);
+      line-height: 1;
+      text-transform: lowercase;
+      text-shadow:
+        0  1px 0   rgba(255,255,255,0.50),
+        0 -1px 0   rgba(30,0,20,0.30),
+        0  0  22px rgba(255,100,200,0.40),
+        0  0  44px rgba(200,60,220,0.20);
+      filter: drop-shadow(0 0 24px rgba(255,80,180,0.30));
+    }
+
+    .name-dot {
+      color: rgba(255,100,200,0.92);
+      font-weight: 200;
+    }
+
+    .name-sub {
+      margin-top: 5px;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      color: rgba(255,160,220,0.36);
+    }
+
+    .card-meta {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: end;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 3px;
+    }
+    .meta-row:last-child { margin-bottom: 0; }
+
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255,100,185,0.58);
+      flex-shrink: 0;
+    }
+
+    .meta-text {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,165,220,0.34);
+      white-space: nowrap;
+    }
+
+    .meta-text em {
+      font-style: normal;
+      color: rgba(255,200,238,0.60);
+    }
+
+    .card-domain {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: end;
+      justify-self: end;
+      text-align: right;
+    }
+
+    .domain-url {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: rgba(255,160,218,0.52);
+      text-transform: lowercase;
+    }
+
+    .domain-tld {
+      color: rgba(255,100,195,0.76);
+    }
+
+    /* ── ESFP 레터 태그 ── */
+    .letter-tag {
+      position: absolute;
+      top: 0; right: 0;
+      z-index: 16;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      padding: 14px 12px 10px;
+      pointer-events: none;
+    }
+
+    .letter-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .letter-char {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(255,150,215,0.60);
+      line-height: 1;
+    }
+
+    .letter-word {
+      font-size: 5.5px;
+      font-weight: 400;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(255,140,205,0.30);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .letter-sep {
+      width: 12px;
+      height: 1px;
+      background: rgba(255,100,185,0.20);
+      margin: 2px 0;
+    }
+
+    /* ── 컨페티 파티클 ── */
+    @keyframes confetti-fall {
+      0% {
+        transform: translate(0, -8px) rotate(0deg) scale(1);
+        opacity: 0;
+      }
+      8%  { opacity: 0.9; }
+      85% { opacity: 0.5; }
+      100% {
+        transform: translate(var(--cx, 10px), 255px)
+                   rotate(var(--cr, 360deg))
+                   scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: 0;
+      pointer-events: none;
+      animation: confetti-fall ease-in infinite;
+      border-radius: var(--br, 1px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-orb bg-orb-4"></div>
+  <div class="bg-orb bg-orb-5"></div>
+
+  <div class="scene">
+    <div class="card-wrap is-idle" id="cardWrap">
+
+      <div class="card-holo"    id="cardHolo"></div>
+      <div class="card-spot"    id="cardSpot"></div>
+      <div class="card-shimmer"></div>
+      <div class="card-texture"></div>
+      <div class="card-edge"></div>
+
+      <div class="card" id="cardFace">
+
+        <!-- ── 배경 SVG — 무대·퍼포머·네온 세계 ── -->
+        <div class="card-inner-art">
+          <svg width="380" height="240" viewBox="0 0 380 240"
+               fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- 중앙 방사 페이드 -->
+              <radialGradient id="eg-c" cx="65%" cy="50%" r="50%">
+                <stop offset="0%"   stop-color="white" stop-opacity="1"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="em-c"><rect width="380" height="240" fill="url(#eg-c)"/></mask>
+
+              <!-- 상단 페이드 -->
+              <radialGradient id="eg-t" cx="50%" cy="5%" r="55%">
+                <stop offset="0%"   stop-color="white" stop-opacity="1"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="em-t"><rect width="380" height="240" fill="url(#eg-t)"/></mask>
+
+              <!-- 좌측 페이드 -->
+              <radialGradient id="eg-l" cx="10%" cy="50%" r="40%">
+                <stop offset="0%"   stop-color="white" stop-opacity="1"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="em-l"><rect width="380" height="240" fill="url(#eg-l)"/></mask>
+
+              <!-- 스포트라이트 그라디언트 -->
+              <radialGradient id="spot1" cx="50%" cy="0%" r="80%">
+                <stop offset="0%"   stop-color="rgba(255,160,230)" stop-opacity="0.20"/>
+                <stop offset="100%" stop-color="rgba(255,100,200)" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="spot2" cx="50%" cy="0%" r="80%">
+                <stop offset="0%"   stop-color="rgba(160,80,255)"  stop-opacity="0.16"/>
+                <stop offset="100%" stop-color="rgba(120,50,230)"  stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="spot3" cx="50%" cy="0%" r="80%">
+                <stop offset="0%"   stop-color="rgba(0,220,230)"   stop-opacity="0.13"/>
+                <stop offset="100%" stop-color="rgba(0,180,200)"   stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- ══ 무대 스포트라이트 빔 ══ -->
+            <!-- 핑크 빔 -->
+            <path d="M170 0 L120 240 L220 240 Z"
+                  fill="url(#spot1)" opacity="0.6"/>
+            <!-- 퍼플 빔 -->
+            <path d="M240 0 L195 240 L285 240 Z"
+                  fill="url(#spot2)" opacity="0.5"/>
+            <!-- 사이언 빔 -->
+            <path d="M310 0 L270 240 L350 240 Z"
+                  fill="url(#spot3)" opacity="0.45"/>
+
+            <!-- ══ 무대 스포트라이트 원형 헤드 ══ -->
+            <g mask="url(#em-t)" opacity="0.35">
+              <!-- 핑크 헤드 -->
+              <circle cx="170" cy="6"  r="5"
+                      fill="rgba(255,100,200,0.60)"
+                      stroke="rgba(255,160,220,0.80)" stroke-width="0.8"/>
+              <circle cx="170" cy="6"  r="2.5"
+                      fill="rgba(255,200,240,0.80)"/>
+              <!-- 퍼플 헤드 -->
+              <circle cx="240" cy="6"  r="5"
+                      fill="rgba(160,60,255,0.55)"
+                      stroke="rgba(200,130,255,0.75)" stroke-width="0.8"/>
+              <circle cx="240" cy="6"  r="2.5"
+                      fill="rgba(220,180,255,0.80)"/>
+              <!-- 사이언 헤드 -->
+              <circle cx="310" cy="6"  r="5"
+                      fill="rgba(0,200,220,0.50)"
+                      stroke="rgba(80,230,240,0.70)" stroke-width="0.8"/>
+              <circle cx="310" cy="6"  r="2.5"
+                      fill="rgba(180,245,250,0.80)"/>
+              <!-- 추가 빔 바 (스포트라이트 행) -->
+              <line x1="90" y1="3" x2="350" y2="3"
+                    stroke="rgba(255,180,230,0.25)" stroke-width="1"/>
+              <!-- 스포트라이트 행 연결 거더 -->
+              <line x1="135" y1="0" x2="135" y2="10"
+                    stroke="rgba(255,160,220,0.30)" stroke-width="0.5"/>
+              <line x1="170" y1="0" x2="170" y2="12"
+                    stroke="rgba(255,140,210,0.35)" stroke-width="0.6"/>
+              <line x1="200" y1="0" x2="200" y2="10"
+                    stroke="rgba(200,120,255,0.28)" stroke-width="0.5"/>
+              <line x1="240" y1="0" x2="240" y2="12"
+                    stroke="rgba(180,80,255,0.35)"  stroke-width="0.6"/>
+              <line x1="275" y1="0" x2="275" y2="10"
+                    stroke="rgba(80,200,220,0.28)"  stroke-width="0.5"/>
+              <line x1="310" y1="0" x2="310" y2="12"
+                    stroke="rgba(0,200,220,0.35)"   stroke-width="0.6"/>
+            </g>
+
+            <!-- ══ 무대 커튼 — 좌측 ══ -->
+            <g mask="url(#em-l)" opacity="0.28">
+              <!-- 커튼 주름 웨이브 -->
+              <path d="M0 0 Q8 20 4 40 Q0 60 6 80 Q12 100 6 120 Q0 140 8 160 Q16 180 8 200 Q0 220 6 240"
+                    stroke="rgba(255,80,160,0.70)" stroke-width="1.2"
+                    fill="rgba(255,60,140,0.08)" />
+              <path d="M12 0 Q20 25 14 50 Q8 75 16 100 Q24 125 16 150 Q8 175 16 200 Q22 220 16 240"
+                    stroke="rgba(255,80,160,0.50)" stroke-width="0.8"
+                    fill="none"/>
+              <path d="M22 0 Q28 18 24 38 Q20 58 26 78 Q32 98 26 120 Q20 142 28 162 Q34 182 28 202 Q22 222 28 240"
+                    stroke="rgba(255,100,170,0.35)" stroke-width="0.6"
+                    fill="none"/>
+              <!-- 커튼 상단 봉 -->
+              <line x1="0" y1="0" x2="45" y2="0"
+                    stroke="rgba(255,140,200,0.45)" stroke-width="1.5"
+                    stroke-linecap="round"/>
+              <!-- 고리 -->
+              <circle cx="5"  cy="0" r="1.5" fill="rgba(255,180,220,0.60)"/>
+              <circle cx="15" cy="0" r="1.5" fill="rgba(255,170,215,0.55)"/>
+              <circle cx="25" cy="0" r="1.5" fill="rgba(255,160,210,0.50)"/>
+              <circle cx="35" cy="0" r="1.5" fill="rgba(255,155,205,0.45)"/>
+            </g>
+
+            <!-- ══ 무대 바닥 반사 라인 ══ -->
+            <g opacity="0.20">
+              <!-- 핑크 반사 -->
+              <line x1="120" y1="240" x2="220" y2="240"
+                    stroke="rgba(255,100,200,0.80)" stroke-width="1.5"/>
+              <line x1="130" y1="238" x2="210" y2="238"
+                    stroke="rgba(255,100,200,0.40)" stroke-width="0.5"/>
+              <!-- 퍼플 반사 -->
+              <line x1="195" y1="240" x2="285" y2="240"
+                    stroke="rgba(160,60,255,0.70)" stroke-width="1.2"/>
+              <!-- 사이언 반사 -->
+              <line x1="270" y1="240" x2="350" y2="240"
+                    stroke="rgba(0,200,220,0.65)" stroke-width="1.2"/>
+            </g>
+
+            <!-- ══ 별/스파클 장식 ══ -->
+            <g mask="url(#em-c)" opacity="0.38">
+              <!-- 큰 별 1 — 핑크 -->
+              <g transform="translate(290, 55)">
+                <line x1="-9" y1="0" x2="9" y2="0"   stroke="rgba(255,120,200,0.85)" stroke-width="0.8"/>
+                <line x1="0" y1="-9" x2="0" y2="9"   stroke="rgba(255,120,200,0.85)" stroke-width="0.8"/>
+                <line x1="-6" y1="-6" x2="6" y2="6"  stroke="rgba(255,140,210,0.60)" stroke-width="0.6"/>
+                <line x1="6" y1="-6" x2="-6" y2="6"  stroke="rgba(255,140,210,0.60)" stroke-width="0.6"/>
+                <circle cx="0" cy="0" r="2.2" fill="rgba(255,200,240,0.90)"/>
+              </g>
+              <!-- 별 2 — 퍼플 -->
+              <g transform="translate(340, 110)">
+                <line x1="-7" y1="0" x2="7" y2="0"   stroke="rgba(180,80,255,0.80)" stroke-width="0.7"/>
+                <line x1="0" y1="-7" x2="0" y2="7"   stroke="rgba(180,80,255,0.80)" stroke-width="0.7"/>
+                <line x1="-5" y1="-5" x2="5" y2="5"  stroke="rgba(200,110,255,0.55)" stroke-width="0.5"/>
+                <line x1="5" y1="-5" x2="-5" y2="5"  stroke="rgba(200,110,255,0.55)" stroke-width="0.5"/>
+                <circle cx="0" cy="0" r="1.8" fill="rgba(220,170,255,0.90)"/>
+              </g>
+              <!-- 별 3 — 사이언 -->
+              <g transform="translate(355, 72)">
+                <line x1="-6" y1="0" x2="6" y2="0"   stroke="rgba(0,220,230,0.75)" stroke-width="0.6"/>
+                <line x1="0" y1="-6" x2="0" y2="6"   stroke="rgba(0,220,230,0.75)" stroke-width="0.6"/>
+                <line x1="-4" y1="-4" x2="4" y2="4"  stroke="rgba(80,235,240,0.50)" stroke-width="0.5"/>
+                <line x1="4" y1="-4" x2="-4" y2="4"  stroke="rgba(80,235,240,0.50)" stroke-width="0.5"/>
+                <circle cx="0" cy="0" r="1.5" fill="rgba(180,248,252,0.90)"/>
+              </g>
+              <!-- 미세 스파클 -->
+              <circle cx="265" cy="40"  r="1.2" fill="rgba(255,180,230,0.80)"/>
+              <circle cx="310" cy="88"  r="0.9" fill="rgba(200,120,255,0.75)"/>
+              <circle cx="375" cy="50"  r="0.8" fill="rgba(0,230,240,0.70)"/>
+              <circle cx="272" cy="125" r="1.0" fill="rgba(255,120,200,0.70)"/>
+              <circle cx="370" cy="145" r="0.8" fill="rgba(180,80,255,0.65)"/>
+              <circle cx="250" cy="90"  r="0.7" fill="rgba(255,200,80,0.65)"/>
+              <circle cx="330" cy="175" r="0.8" fill="rgba(255,100,180,0.60)"/>
+            </g>
+
+            <!-- ══ 음파 / 에너지 파동 — 하단 ══ -->
+            <g opacity="0.16">
+              <path d="M0 190 Q20 182 40 190 Q60 198 80 188 Q100 178 120 188 Q140 198 160 186 Q180 174 200 186 Q220 198 240 185 Q260 172 280 185 Q300 198 320 184 Q340 170 360 184 Q372 192 380 188"
+                    stroke="rgba(255,100,190,0.90)" stroke-width="0.6" fill="none"/>
+              <path d="M0 200 Q22 194 44 200 Q66 206 88 197 Q110 188 132 197 Q154 206 176 196 Q198 186 220 196 Q242 206 264 195 Q286 184 308 195 Q330 206 352 194 Q368 186 380 194"
+                    stroke="rgba(160,60,255,0.70)"  stroke-width="0.5" fill="none"/>
+              <path d="M0 210 Q25 205 50 210 Q75 215 100 207 Q125 199 150 207 Q175 215 200 206 Q225 197 250 206 Q275 215 300 205 Q325 195 350 205 Q368 212 380 207"
+                    stroke="rgba(0,200,220,0.55)"   stroke-width="0.4" fill="none"/>
+            </g>
+
+            <!-- ══ 뮤직 노트 장식 — 좌하 ══ -->
+            <g opacity="0.22" mask="url(#em-l)">
+              <!-- 8분음표 -->
+              <g transform="translate(28, 170)">
+                <circle cx="0" cy="10" r="4.5"
+                        fill="rgba(255,100,190,0.35)"
+                        stroke="rgba(255,120,200,0.65)" stroke-width="0.7"/>
+                <line x1="4.5" y1="10" x2="4.5" y2="-2"
+                      stroke="rgba(255,120,200,0.65)" stroke-width="0.8"
+                      stroke-linecap="round"/>
+                <!-- 꼬리 -->
+                <path d="M4.5 -2 Q10 2 7 6"
+                      stroke="rgba(255,120,200,0.55)" stroke-width="0.7"
+                      fill="none" stroke-linecap="round"/>
+              </g>
+              <!-- 4분음표 -->
+              <g transform="translate(50, 155)">
+                <circle cx="0" cy="10" r="4"
+                        fill="rgba(180,80,255,0.30)"
+                        stroke="rgba(200,110,255,0.60)" stroke-width="0.7"/>
+                <line x1="4" y1="10" x2="4" y2="-4"
+                      stroke="rgba(200,110,255,0.60)" stroke-width="0.8"
+                      stroke-linecap="round"/>
+              </g>
+              <!-- 연음 슬러 -->
+              <path d="M28 158 Q39 152 50 155"
+                    stroke="rgba(255,140,210,0.40)" stroke-width="0.6"
+                    fill="none"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- 컨페티 파티클 컨테이너 -->
+        <div id="confettiContainer" style="
+          position:absolute; inset:0; z-index:7;
+          pointer-events:none; overflow:hidden; border-radius:16px;
+        "></div>
+
+        <!-- ESFP 레터 태그 -->
+        <div class="letter-tag">
+          <div class="letter-item">
+            <span class="letter-char">E</span>
+            <span class="letter-word">Extrav</span>
+          </div>
+          <div class="letter-sep"></div>
+          <div class="letter-item">
+            <span class="letter-char">S</span>
+            <span class="letter-word">Sensing</span>
+          </div>
+          <div class="letter-sep"></div>
+          <div class="letter-item">
+            <span class="letter-char">F</span>
+            <span class="letter-word">Feeling</span>
+          </div>
+          <div class="letter-sep"></div>
+          <div class="letter-item">
+            <span class="letter-char">P</span>
+            <span class="letter-word">Perceiv</span>
+          </div>
+        </div>
+
+        <!-- hover 의미 오버레이 -->
+        <div class="card-meanings">
+          <div class="meanings-row">
+            <div class="meaning-item">
+              <span class="meaning-glyph">🎤</span>
+              <span class="meaning-label">Extrovert</span>
+            </div>
+            <div class="meaning-sep"></div>
+            <div class="meaning-item">
+              <span class="meaning-glyph">✨</span>
+              <span class="meaning-label">Sensing</span>
+            </div>
+            <div class="meaning-sep"></div>
+            <div class="meaning-item">
+              <span class="meaning-glyph">🎉</span>
+              <span class="meaning-label">Feeling</span>
+            </div>
+            <div class="meaning-sep"></div>
+            <div class="meaning-item">
+              <span class="meaning-glyph">🌈</span>
+              <span class="meaning-label">Perceiving</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-vline"></div>
+        <div class="card-hline"></div>
+
+        <div class="card-content">
+
+          <div class="card-name">
+            <div class="name-main">
+              esfp<span class="name-dot">.</span>kr
+            </div>
+            <div class="name-sub">the entertainer · the performer</div>
+          </div>
+
+          <div style="opacity:0; pointer-events:none; width:44px; height:44px;"></div>
+
+          <div class="card-meta">
+            <div class="meta-row">
+              <div class="meta-dot"></div>
+              <span class="meta-text"><em>E</em> — Extraverted · Life of the Party</span>
+            </div>
+            <div class="meta-row">
+              <div class="meta-dot"></div>
+              <span class="meta-text"><em>S</em> — Sensing · Vivid &amp; Present</span>
+            </div>
+            <div class="meta-row">
+              <div class="meta-dot"></div>
+              <span class="meta-text"><em>FP</em> — Feeling &amp; Perceiving · Spark</span>
+            </div>
+          </div>
+
+          <div class="card-domain">
+            <div class="domain-url">
+              esfp<span class="domain-tld">.kr</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── 3D Tilt ── */
+    const wrap = document.getElementById('cardWrap');
+    const holo = document.getElementById('cardHolo');
+    const spot = document.getElementById('cardSpot');
+
+    let tX = 0, tY = 0, cX = 0, cY = 0;
+    let hovering = false;
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    (function loop() {
+      cX = lerp(cX, tX, 0.12);
+      cY = lerp(cY, tY, 0.12);
+      wrap.style.transform = hovering
+        ? `rotateX(${cX}deg) rotateY(${cY}deg) scale(1.040)`
+        : `rotateX(${cX}deg) rotateY(${cY}deg)`;
+      requestAnimationFrame(loop);
+    })();
+
+    wrap.addEventListener('mouseenter', () => {
+      hovering = true;
+      wrap.classList.remove('is-idle');
+      wrap.style.animation = 'none';
+      wrap.style.boxShadow = `
+        0 40px 80px rgba(8,4,16,0.75),
+        0  0  60px rgba(255,60,160,0.18),
+        0  0  80px rgba(140,40,230,0.12),
+        0  0 100px rgba(0,200,220,0.08)
+      `;
+    });
+
+    wrap.addEventListener('mouseleave', () => {
+      hovering = false;
+      tX = 0; tY = 0;
+      wrap.style.boxShadow = '';
+      holo.style.removeProperty('--mx');
+      holo.style.removeProperty('--my');
+      holo.style.removeProperty('--r');
+      spot.style.removeProperty('--mx');
+      spot.style.removeProperty('--my');
+    });
+
+    wrap.addEventListener('mousemove', (e) => {
+      const r  = wrap.getBoundingClientRect();
+      const nx = (e.clientX - r.left  - r.width  / 2) / (r.width  / 2);
+      const ny = (e.clientY - r.top   - r.height / 2) / (r.height / 2);
+
+      tY =  nx * 18;
+      tX = -ny * 14;
+
+      const px    = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
+      const py    = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
+      const angle = (Math.atan2(ny, nx) * 180 / Math.PI + 90).toFixed(1) + 'deg';
+
+      holo.style.setProperty('--mx', px);
+      holo.style.setProperty('--my', py);
+      holo.style.setProperty('--r',  angle);
+      spot.style.setProperty('--mx', px);
+      spot.style.setProperty('--my', py);
+    });
+
+    /* ── 컨페티 파티클 생성 ── */
+    const container = document.getElementById('confettiContainer');
+
+    /*
+      ESFP: 다채로운 색상의 컨페티 조각들
+      직사각형·정사각형·원형 믹스
+      핑크·퍼플·사이언·골드·코랄 5색
+    */
+    const CONFETTI = [
+      /* x,    w,  h,   color,                          dur,  delay, cx,     cr,       br   */
+      ['12%',  5,  3,   'rgba(255,80,170,0.80)',         4.2,  0,     '16px', '320deg', '1px'],
+      ['24%',  3,  3,   'rgba(160,60,255,0.75)',         5.5,  0.7,   '-12px','270deg', '50%'],
+      ['35%',  6,  2.5, 'rgba(0,210,225,0.72)',          4.8,  1.5,   '20px', '380deg', '1px'],
+      ['46%',  4,  4,   'rgba(255,190,0,0.78)',          5.0,  0.3,   '-18px','290deg', '50%'],
+      ['57%',  5,  2,   'rgba(255,80,110,0.76)',         4.4,  2.2,   '14px', '340deg', '1px'],
+      ['68%',  3,  3,   'rgba(180,80,255,0.72)',         5.8,  1.0,   '-10px','260deg', '50%'],
+      ['78%',  6,  2.5, 'rgba(255,90,175,0.74)',         4.6,  3.0,   '22px', '400deg', '1px'],
+      ['88%',  4,  2,   'rgba(0,220,240,0.68)',          5.2,  1.8,   '-15px','310deg', '1px'],
+      ['20%',  3,  5,   'rgba(255,180,0,0.70)',          6.0,  2.5,   '10px', '350deg', '1px'],
+      ['50%',  4,  4,   'rgba(255,60,140,0.72)',         4.9,  0.5,   '-20px','280deg', '50%'],
+      ['62%',  5,  2,   'rgba(140,50,255,0.70)',         5.5,  3.5,   '18px', '360deg', '1px'],
+      ['40%',  3,  3,   'rgba(0,200,215,0.68)',          4.3,  1.2,   '-8px', '300deg', '50%'],
+    ];
+
+    CONFETTI.forEach(([x, w, h, color, dur, delay, cx, cr, br]) => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.cssText = `
+        left: ${x};
+        width:  ${w}px;
+        height: ${h}px;
+        background: ${color};
+        --cx: ${cx};
+        --cr: ${cr};
+        --br: ${br};
+        animation-duration:  ${dur}s;
+        animation-delay: ${delay}s;
+        box-shadow: 0 0 ${w}px ${color};
+      `;
+      container.appendChild(el);
+    });
+  </script>
+
+</body>
+</html>
